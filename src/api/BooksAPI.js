@@ -32,6 +32,7 @@ export const update = (book, shelf) =>
     body: JSON.stringify({ shelf })
   }).then(res => res.json())
 
+/** this was only used during test*/
   export const update1 = (bookId, shelf) =>
   fetch(`${api}/books/${bookId}`, {
     method: 'PUT',

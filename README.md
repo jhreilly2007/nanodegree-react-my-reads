@@ -3,6 +3,15 @@
 ## Project Overview
 A bookshelf app that allows you to select and categorize books you have read, are currently reading, or want to read. A React application with an API server and client library to persist information as you interact with the application.
 
+## Resources
+https://reactrouter.com/docs/en/v6/getting-started/tutorial
+https://www.freecodecamp.org/news/debounce-and-throttle-in-react-with-hooks/
+https://reactjs.org/tutorial/tutorial.html
+https://reactjs.org/docs/components-and-props.html
+https://reactjs.org/docs/conditional-rendering.html
+https://reactjs.org/tutorial/tutorial.html
+https://medium.com/javascript-scene/the-missing-introduction-to-react-62837cb2fd76
+
 ## Approach
 I created this application using ``create-react-app`` I then added the starter code, provided by Udacity, to my project. 
 
