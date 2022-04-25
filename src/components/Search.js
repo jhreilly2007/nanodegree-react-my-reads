@@ -4,20 +4,22 @@ import * as BooksAPI from '../api/BooksAPI'
 import {Link} from 'react-router-dom'
 
 class Search extends React.Component {
-
+  /**search state is only needed in this component*/
   state = { searchResults: [], searchString: ""}
 
-  handleChange = e => {
-    this.setState ({ searchString: e.target.value}); 
-    console.log(this.state.searchString.length)
-    if (this.state.searchString.length > 0){
-      BooksAPI.search(this.state.searchString).then((searchResults) => {
+  /**if statement to avoid app crashing when calling map() 
+   * if no results returned*/
+  handleSearch = e => { 
+    if (e.target.value.length > 0){
+      BooksAPI.search(e.target.value).then((searchResults) => {
         this.setState({ 
           searchResults: searchResults
         })
       })
-    }else
+    }else{
       this.setState({searchResults: []}) 
+    }
+    this.setState ({ searchString: e.target.value});
   }
 
   render(){
@@ -43,31 +45,33 @@ class Search extends React.Component {
             <input type="text" 
               placeholder="Search by title or author"
               value = {this.state.searchString}
-              onChange={this.handleChange}
+              onChange={this.handleSearch}
               />
           </div>
         </div>
         <div className="search-books-results">
-                <ol className="books-grid">
-                {
-                  this.state.searchResults.length ? 
-                      this.state.searchResults
-                      .map(
-                        book => (
-                          <li key = {book.id}>
-                            <Book
-                              book = {book}
-                              shelf = {book.shelf === undefined ? defaultShelf : book.shelf}
-                              library = {this.props.library}
-                            />
-                          </li>
-                        )) : 
-                      <div><h1>No results Found:  {this.state.searchString}</h1></div>
-                }
-                </ol>
+          <ol className="books-grid">
+          {
+            this.state.searchResults.length ? 
+            (this.state.searchResults.map(
+              book => (
+                <li key = {book.id}>
+                  <Book
+                    book = {book}
+                    shelf = {book.shelf === undefined ? defaultShelf : book.shelf}
+                    library = {this.props.library}
+                  />
+                </li>
+                ))):
+            (<div>
+              <h1>No results Found: {this.state.searchString}</h1>
+            </div>)
+          }
+          </ol>
         </div>
       </div>
       )
   }
 }
-export default Search;
+
+export default Search
