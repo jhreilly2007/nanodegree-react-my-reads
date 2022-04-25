@@ -4,14 +4,15 @@ import ShelfChanger from './ShelfChanger.js'
 class Book extends React.Component {
   
   render() {
-    console.log(this.props.shelf)
+    /**deal books with out a thumbnail as per spec*/
+    var thumbnail = (this.props.book.imageLinks) ? this.props.book.imageLinks.thumbnail : '';
     return (
       <div className="book">
         <div className="book-top">
           <div className="book-cover" style={
             { width: 128, 
               height: 193, 
-              backgroundImage: `url("${this.props.book.imageLinks.thumbnail}")` 
+              backgroundImage: `url("${thumbnail}")` 
             }
           }>
           </div>
