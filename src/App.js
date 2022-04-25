@@ -3,7 +3,6 @@ import {Route, Routes} from "react-router-dom";
 import './stylesheets/App.css'
 import * as BooksAPI from './api/BooksAPI.js'
 import BookShelf from "./components/BookShelf";
-import Book from "./components/Book";
 import Search from "./components/Search";
 
 class BooksApp extends React.Component {
@@ -37,7 +36,6 @@ class BooksApp extends React.Component {
   render() {  
     return (
       <div className="app">
-      {console.log(this.state.library)}
       <Routes>
         <Route path="/" 
           element={

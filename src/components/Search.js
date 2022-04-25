@@ -1,34 +1,27 @@
 import React from 'react'
-import App from '../App.js'
 import Book from './Book'
 import * as BooksAPI from '../api/BooksAPI'
 import {Link} from 'react-router-dom'
 
 class Search extends React.Component {
 
-  handleChange(e) {
-    this.props.shelfChanger(this.props.book, e.target.value);   
-  }
-
   state = { searchResults: [], searchString: ""}
 
-  updateSearchString = (searchString) => {
-    this.setState({
-            searchString: searchString
+  handleChange = e => {
+    this.setState ({ searchString: e.target.value}); 
+    console.log(this.state.searchString.length)
+    if (this.state.searchString.length > 0){
+      BooksAPI.search(this.state.searchString).then((searchResults) => {
+        this.setState({ 
+          searchResults: searchResults
         })
-    this.search(searchString)
-  }
-
-  search = (searchString) => {
-    BooksAPI.getAll().then((searchResults) => {
-      this.setState({ 
-        searchResults: searchResults, 
-        searchString: searchString 
       })
-    })
+    }else
+      this.setState({searchResults: []}) 
   }
 
   render(){
+    var defaultShelf = 'none'
     return ( 
       <div className="search-books">  
         <div className="search-books-bar">
@@ -50,24 +43,26 @@ class Search extends React.Component {
             <input type="text" 
               placeholder="Search by title or author"
               value = {this.state.searchString}
-              onChange={(e)=>this.updateSearchString(e.target.value)}
+              onChange={this.handleChange}
               />
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
+                <ol className="books-grid">
                 {
-                  this.state.searchResults
-                  .map(
-                    book => (
-                      <li key = {book.id}>
-                        <Book
-                          book = {book}
-                          shelf = {book.shelf}
-                          shelfChanger = {this.props.shelfChanger}
-                        />
-                      </li>
-                    ))
+                  this.state.searchResults.length ? 
+                      this.state.searchResults
+                      .map(
+                        book => (
+                          <li key = {book.id}>
+                            <Book
+                              book = {book}
+                              shelf = {book.shelf === undefined ? defaultShelf : book.shelf}
+                              library = {this.props.library}
+                            />
+                          </li>
+                        )) : 
+                      <div><h1>No results Found:  {this.state.searchString}</h1></div>
                 }
                 </ol>
         </div>

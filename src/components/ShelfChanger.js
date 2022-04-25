@@ -4,26 +4,28 @@ import * as BooksAPI from '../api/BooksAPI'
 class ShelfChanger extends React.Component {
   /**Shelf state of the shelf contained to shelfchanging component*/
   state = {
-    shelf: this.props.book.shelf
+    shelf: this.props.shelf
   }
 
   shelfChanger = (book, shelf) => {
-    BooksAPI.update1(book, shelf)
+    BooksAPI.update(book, shelf)
     BooksAPI.getAll().then((library) => {
       this.setState({ library: library })
     })
   }
 
   /**Handle bookshelf changes*/
-  handleChange(e) {
+  handleChange = e => {
+    console.log(this.state.shelf)
     this.setState({ shelf: e.target.value})
+    console.log(e.target.value)
     this.shelfChanger(this.props.book, e.target.value);  
   }
 
   render() {
     return(
       <div className="book-shelf-changer">
-        <select onChange={(e) => this.handleChange(e)} value={this.state.shelf}>
+        <select onChange={this.handleChange} value={this.state.shelf}>
           <option value="move" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>

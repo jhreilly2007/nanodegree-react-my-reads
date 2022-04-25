@@ -4,6 +4,7 @@ import ShelfChanger from './ShelfChanger.js'
 class Book extends React.Component {
   
   render() {
+    console.log(this.props.shelf)
     return (
       <div className="book">
         <div className="book-top">
@@ -17,6 +18,7 @@ class Book extends React.Component {
           <ShelfChanger
               library = {this.props.library}
               book = {this.props.book}
+              shelf = {this.props.shelf}
           ></ShelfChanger>
         </div>
         <div className="book-title">{this.props.book.title}</div>
