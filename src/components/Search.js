@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 
 class Search extends React.Component {
   /**search state is only needed in this component*/
-  state = { searchResults: [], searchString: ""}
+  state = { searchResults: [], searchString: "", currentShelf: "none"}
 
   /**if statement to avoid app crashing when calling map() 
    * if no results returned*/
@@ -23,7 +23,7 @@ class Search extends React.Component {
   }
 
   render(){
-    var defaultShelf = 'none'
+    //var updateShelf = "none"//needs to be moved to map function
     return ( 
       <div className="search-books">  
         <div className="search-books-bar">
@@ -52,17 +52,32 @@ class Search extends React.Component {
         <div className="search-books-results">
           <ol className="books-grid">
           {
-            this.state.searchResults.length ? 
-            (this.state.searchResults.map(
-              book => (
+            this.state.searchResults.length ?
+            (this.state.searchResults.map (book => {
+              /**searched books have no shelf details
+               * assume shelf none to start*/
+              var updateShelf = 'none'
+              
+              /**Check if books returned in search are part
+               * of our app library, if so update the shelf to 
+               * same else set to none*/
+              this.props.library.forEach(libraryBook => {
+                (libraryBook.id === book.id) ?
+                  updateShelf = libraryBook.shelf :
+                /** this causes a maximum update depth error*/
+                  //this.setState({currentShelf:libraryBook.shelf}):
+                  book.shelf = "none"
+              })
+              return(
                 <li key = {book.id}>
                   <Book
                     book = {book}
-                    shelf = {book.shelf === undefined ? defaultShelf : book.shelf}
+                    shelf = {updateShelf}
                     library = {this.props.library}
                   />
                 </li>
-                ))):
+                )
+            })):
             (<div>
               <h1>No results Found: {this.state.searchString}</h1>
             </div>)
